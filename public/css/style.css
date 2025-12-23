@@ -119,3 +119,10 @@ footer{
     padding-left: 0;
     padding-right: 0;
 }
+
+/* Map */
+#map { 
+  width: 80vh;
+  height: 400px; 
+    
+}

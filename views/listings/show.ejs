@@ -1,6 +1,9 @@
 <% layout("layouts/boilerplate") %>
 
-    <body>
+        <script>
+            const mapToken = "<%= process.env.MAP_TOKEN %>"
+            const listing = <%- JSON.stringify(listing) %>
+        </script>
         <div class="row mt-3">
             <div class="col-8 offset-3">
                 <h3>
@@ -8,7 +11,7 @@
                 </h3>
             </div>
             <div class="card col-5 offset-3 show-card listing-card">
-                <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing_image">
+                <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
                 <div class="card-body">
                     <p class="card-text">Owned By: <%= listing.owner.username%>
                     </p>
@@ -33,7 +36,7 @@
                     <button class="btn btn-dark offset-5">Delete</button>
                 </form>
             </div>
-            <% } %>
+        <% } %>
                 <div class="col-8 offset-3">
                     <hr>
                     <% if(currUser) {%>
@@ -72,11 +75,13 @@
                             </div>
                             <button class="btn btn-outline-dark">Submit</button>
                         </form>
+                        <hr>
                         <% } %>
+                        
+                        <% if(listing.reviews.length > 0) { %>
                             <p><b>All Reviews</b></p>
                             <div class="row">
-
-
+                               
                                 <% for(review of listing.reviews) { %>
                                     <div class="card col-5 ms-3 mb-3">
                                         <div class="card-body">
@@ -88,7 +93,7 @@
                                                 <%= review.comment %>
                                             </p>
                                         </div>
-                                        
+
                                         <form class="mb-3" method="post"
                                             action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
                                             <button class="btn btn-sm btn-dark">Delete</button>
@@ -96,6 +101,13 @@
                                     </div>
                                     <% } %>
                             </div>
+                        <% } %>
+
 
                 </div>
-    </body>
+                <div class="class=col-8 offset-3 mb-3">
+                    <h3>Where you'll be</h3>
+                    <div id="map"></div>
+                </div>
+                <script src="/js/map.js"></script>
+                

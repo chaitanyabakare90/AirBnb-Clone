@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production") {
+    require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -9,6 +13,7 @@ const { error } = require("console");
 const Review = require("./models/review.js");
 
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -18,17 +23,18 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
+const db_url = process.env.ATLASDB_URL;
 main().then(() => {
     console.log("connection successful");
 }).catch((err) => {
     console.log(err);
 })
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+    await mongoose.connect(db_url); //we have to paste link provided by mongo atlass
 }
-app.get("/", (req, res) => {
-    res.send("Hi its working!!");
-})
+// app.get("/", (req, res) => {
+//     res.send("Hi its working!!");
+// })
 
 
 app.set("view engine", "ejs");
@@ -38,8 +44,20 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
+
+const store= MongoStore.create({
+    mongoUrl:db_url,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter : 24*3600,
+ }); 
+ store.on("error",()=>{
+    console.log("ERROR IN MONGO STORE".err);
+ })
 const sessionOptions = {
-    secret : "mysupersecretcode",
+    store,
+    secret :process.env.SECRET,
     resave : false,
     saveUnintialized : true,
     cookie :{
