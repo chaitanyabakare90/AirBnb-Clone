@@ -32,9 +32,9 @@ main().then(() => {
 async function main() {
     await mongoose.connect(db_url); //we have to paste link provided by mongo atlass
 }
-// app.get("/", (req, res) => {
-//     res.send("Hi its working!!");
-// })
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+})
 
 
 app.set("view engine", "ejs");
@@ -59,7 +59,7 @@ const sessionOptions = {
     store,
     secret :process.env.SECRET,
     resave : false,
-    saveUnintialized : true,
+    saveUninitialized : true,
     cookie :{
         expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge : 7 * 24 * 60 * 60 * 1000,
@@ -96,7 +96,6 @@ app.use("/", userRouter);
 //     let registeredUser = await User.register(fakeuser,"HelloChaitu");
 //     res.send(registeredUser);
 // })
-
 
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
