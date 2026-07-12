@@ -1,18 +1,227 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="row mt-3">
-    <h1 class="col-6 offset-3">Login</h1>
-    <div class="col-6 offset-3">
-        <form action="/login" method="post" novalidate class="needs-validation">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" id="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="password" required>
-            </div>
-            <button class="btn btn-success">Login</button>
-        </form>
+<style>
+  /* ── Auth page wrapper ── */
+  .auth-wrapper {
+    min-height: calc(100vh - 10rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .auth-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 440px;
+    padding: 2.8rem 2.5rem 2.4rem;
+    animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Brand logo ── */
+  .auth-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .auth-brand .brand-icon {
+    color: #fe424d;
+    font-size: 2rem;
+  }
+
+  .auth-brand .brand-name {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #fe424d;
+    letter-spacing: -0.5px;
+  }
+
+  /* ── Headings ── */
+  .auth-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #222222;
+    text-align: center;
+    margin-bottom: 0.35rem;
+  }
+
+  .auth-subtitle {
+    font-size: 0.9rem;
+    color: #717171;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* ── Divider ── */
+  .auth-divider {
+    border: none;
+    border-top: 1px solid #ebebeb;
+    margin: 1.6rem 0;
+  }
+
+  /* ── Form controls ── */
+  .auth-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #222222;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+
+  .auth-input {
+    width: 100%;
+    padding: 0.78rem 1rem;
+    border: 1.5px solid #dddddd;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #222222;
+    background: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    outline: none;
+  }
+
+  .auth-input:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.12);
+    background: #fff;
+  }
+
+  .auth-input::placeholder { color: #b0b0b0; }
+
+  .input-icon-wrap {
+    position: relative;
+  }
+
+  .input-icon-wrap .input-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 0.9rem;
+    pointer-events: none;
+  }
+
+  .input-icon-wrap .auth-input {
+    padding-left: 2.4rem;
+  }
+
+  /* ── Submit button ── */
+  .auth-btn {
+    width: 100%;
+    padding: 0.82rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #fe424d 0%, #e5373f 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.2px;
+  }
+
+  .auth-btn:hover {
+    background: linear-gradient(135deg, #e5373f 0%, #c92d34 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(254, 66, 77, 0.35);
+  }
+
+  .auth-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  /* ── Footer link ── */
+  .auth-footer-text {
+    text-align: center;
+    font-size: 0.88rem;
+    color: #717171;
+    margin-top: 1.4rem;
+  }
+
+  .auth-footer-text a {
+    color: #fe424d;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .auth-footer-text a:hover { opacity: 0.8; text-decoration: underline; }
+
+  /* ── Validation ── */
+  .auth-input.is-invalid { border-color: #dc3545; }
+  .invalid-feedback { font-size: 0.8rem; color: #dc3545; margin-top: 0.3rem; display: none; }
+  .was-validated .auth-input:invalid ~ .invalid-feedback { display: block; }
+</style>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <!-- Brand -->
+    <div class="auth-brand">
+      <i class="fa-regular fa-compass brand-icon"></i>
+      <span class="brand-name">WanderLust</span>
     </div>
+
+    <h1 class="auth-title">Welcome back</h1>
+    <p class="auth-subtitle">Log in to continue your journey</p>
+
+    <hr class="auth-divider">
+
+    <form action="/login" method="post" novalidate class="needs-validation">
+
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="username" class="auth-label">Username</label>
+        <div class="input-icon-wrap">
+          <i class="fa-regular fa-user input-icon"></i>
+          <input
+            type="text"
+            name="username"
+            class="auth-input"
+            id="username"
+            placeholder="Enter your username"
+            required
+          >
+        </div>
+        <div class="invalid-feedback">Please enter your username.</div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="auth-label">Password</label>
+        <div class="input-icon-wrap">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input
+            type="password"
+            name="password"
+            class="auth-input"
+            id="password"
+            placeholder="Enter your password"
+            required
+          >
+        </div>
+        <div class="invalid-feedback">Please enter your password.</div>
+      </div>
+
+      <button type="submit" class="auth-btn" id="login-btn">Log in</button>
+    </form>
+
+    <p class="auth-footer-text">
+      Don't have an account? <a href="/signup">Sign up</a>
+    </p>
+
+  </div>
 </div>

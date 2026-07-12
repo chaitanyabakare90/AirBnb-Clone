@@ -1,25 +1,283 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="row mt-3">
-    <h1 class="col-6 offset-3">SignUp on WanderLust</h1>
-    <div class="col-6 offset-3">
-        <form action="/signup" method="post" novalidate class="needs-validation">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" id="username" required>
-                <div class="valid-feedback">
-                    Looks Good!
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" id="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="password" required>
-            </div>
-            <button class="btn btn-success">SignUp</button>
-        </form>
+<style>
+  /* ── Auth page wrapper ── */
+  .auth-wrapper {
+    min-height: calc(100vh - 10rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .auth-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 460px;
+    padding: 2.8rem 2.5rem 2.4rem;
+    animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Brand logo ── */
+  .auth-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .auth-brand .brand-icon {
+    color: #fe424d;
+    font-size: 2rem;
+  }
+
+  .auth-brand .brand-name {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #fe424d;
+    letter-spacing: -0.5px;
+  }
+
+  /* ── Headings ── */
+  .auth-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #222222;
+    text-align: center;
+    margin-bottom: 0.35rem;
+  }
+
+  .auth-subtitle {
+    font-size: 0.9rem;
+    color: #717171;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* ── Divider ── */
+  .auth-divider {
+    border: none;
+    border-top: 1px solid #ebebeb;
+    margin: 1.6rem 0;
+  }
+
+  /* ── Form controls ── */
+  .auth-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #222222;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+
+  .auth-input {
+    width: 100%;
+    padding: 0.78rem 1rem;
+    border: 1.5px solid #dddddd;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #222222;
+    background: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    outline: none;
+  }
+
+  .auth-input:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.12);
+    background: #fff;
+  }
+
+  .auth-input::placeholder { color: #b0b0b0; }
+
+  .input-icon-wrap {
+    position: relative;
+  }
+
+  .input-icon-wrap .input-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 0.9rem;
+    pointer-events: none;
+  }
+
+  .input-icon-wrap .auth-input {
+    padding-left: 2.4rem;
+  }
+
+  /* ── Valid feedback ── */
+  .valid-feedback-custom {
+    font-size: 0.8rem;
+    color: #28a745;
+    margin-top: 0.3rem;
+    display: none;
+  }
+
+  .was-validated .auth-input:valid ~ .valid-feedback-custom { display: block; }
+
+  .invalid-feedback-custom {
+    font-size: 0.8rem;
+    color: #dc3545;
+    margin-top: 0.3rem;
+    display: none;
+  }
+
+  .was-validated .auth-input:invalid ~ .invalid-feedback-custom { display: block; }
+
+  /* ── Submit button ── */
+  .auth-btn {
+    width: 100%;
+    padding: 0.82rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #fe424d 0%, #e5373f 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.2px;
+  }
+
+  .auth-btn:hover {
+    background: linear-gradient(135deg, #e5373f 0%, #c92d34 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(254, 66, 77, 0.35);
+  }
+
+  .auth-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  /* ── Password strength hint ── */
+  .password-hint {
+    font-size: 0.78rem;
+    color: #aaa;
+    margin-top: 0.3rem;
+  }
+
+  /* ── Footer link ── */
+  .auth-footer-text {
+    text-align: center;
+    font-size: 0.88rem;
+    color: #717171;
+    margin-top: 1.4rem;
+  }
+
+  .auth-footer-text a {
+    color: #fe424d;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .auth-footer-text a:hover { opacity: 0.8; text-decoration: underline; }
+
+  /* ── Terms note ── */
+  .auth-terms {
+    font-size: 0.78rem;
+    color: #aaa;
+    text-align: center;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  .auth-terms a { color: #717171; text-decoration: underline; }
+</style>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <!-- Brand -->
+    <div class="auth-brand">
+      <i class="fa-regular fa-compass brand-icon"></i>
+      <span class="brand-name">WanderLust</span>
     </div>
+
+    <h1 class="auth-title">Create your account</h1>
+    <p class="auth-subtitle">Join millions exploring the world</p>
+
+    <hr class="auth-divider">
+
+    <form action="/signup" method="post" novalidate class="needs-validation">
+
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="username" class="auth-label">Username</label>
+        <div class="input-icon-wrap">
+          <i class="fa-regular fa-user input-icon"></i>
+          <input
+            type="text"
+            name="username"
+            class="auth-input"
+            id="username"
+            placeholder="Choose a username"
+            required
+          >
+        </div>
+        <div class="valid-feedback-custom">Looks good!</div>
+        <div class="invalid-feedback-custom">Please choose a username.</div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="auth-label">Email address</label>
+        <div class="input-icon-wrap">
+          <i class="fa-regular fa-envelope input-icon"></i>
+          <input
+            type="email"
+            name="email"
+            class="auth-input"
+            id="email"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+        <div class="invalid-feedback-custom">Please enter a valid email.</div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="auth-label">Password</label>
+        <div class="input-icon-wrap">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input
+            type="password"
+            name="password"
+            class="auth-input"
+            id="password"
+            placeholder="Create a strong password"
+            required
+          >
+        </div>
+        <p class="password-hint">Use at least 8 characters with letters and numbers.</p>
+        <div class="invalid-feedback-custom">Please set a password.</div>
+      </div>
+
+      <button type="submit" class="auth-btn" id="signup-btn">Create account</button>
+    </form>
+
+    <p class="auth-terms">
+      By signing up, you agree to WanderLust's
+      <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+    </p>
+
+    <p class="auth-footer-text">
+      Already have an account? <a href="/login">Log in</a>
+    </p>
+
+  </div>
 </div>
