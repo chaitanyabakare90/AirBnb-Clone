@@ -4,9 +4,24 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');//access g
 const mapToken = process.env.MAP_TOKEN;
 
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });//start geocoding service by passing access token
-module.exports.index = async (req,res) =>{
-  const alllistings = await Listing.find({});
-  res.render("listings/index.ejs",{alllistings});
+module.exports.index = async (req, res) => {
+  const searchQuery = req.query.search ? req.query.search.trim() : "";
+  let alllistings;
+
+  if (searchQuery) {
+    // Case-insensitive search on both location and country fields
+    const regex = new RegExp(searchQuery, "i");
+    alllistings = await Listing.find({
+      $or: [
+        { location: regex },
+        { country: regex },
+      ],
+    });
+  } else {
+    alllistings = await Listing.find({});
+  }
+
+  res.render("listings/index.ejs", { alllistings, searchQuery });
 };
 
 module.exports.renderNewForm = (req,res) =>{
