@@ -1,128 +1,805 @@
-body{
+:root {
+    --primary-color: #fe424d;
+    --primary-dark: #e0313a;
+    --text-dark: #222222;
+    --text-gray: #717171;
+    --border-light: #dddddd;
+    --bg-light: #f7f7f7;
+    --card-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    --transition-standard: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body {
     font-family: "Plus Jakarta Sans", sans-serif !important;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-
+    color: var(--text-dark);
+    background-color: #ffffff;
 }
 
-.container{
+.container {
     flex: 1;
 }
-.navbar{
+
+/* Navbar */
+.navbar {
     height: 5rem;
     background-color: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    border-bottom: 1px solid #ebebeb !important;
 }
 
-.fa-compass{
-    color: #fe424d;
+.fa-compass {
+    color: var(--primary-color);
     font-size: 2rem;
+    transition: var(--transition-standard);
 }
 
-.nav-link{
-    color: #222222 !important ; /*by default the styling is off bootstrap, so override this styling with our styling we us !important*/
+.fa-compass:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    color: var(--text-dark) !important;
+    font-weight: 500 !important;
+    transition: var(--transition-standard) !important;
+    font-size: 0.95rem;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+.search-btn {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border-radius: 25px !important;
+    padding: 0.5rem 1.25rem !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: var(--transition-standard) !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.search-btn:hover {
+    background-color: var(--primary-dark) !important;
+    box-shadow: 0 4px 10px rgba(254, 66, 77, 0.25);
+    color: white !important;
+}
+
+.search-btn i {
+    display: inline;
+    margin-right: 0.5rem;
+}
+
+.search-inp {
+    border-radius: 25px !important;
+    padding: 0.5rem 1.5rem !important;
+    border: 1px solid var(--border-light) !important;
+    outline: none !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+    transition: var(--transition-standard) !important;
+}
+
+.search-inp:focus {
+    border-color: var(--text-dark) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08) !important;
 }
 
 /* Footer */
-
-.f-info-links a{
-    text-decoration: none;
-    color: #222222;
+footer {
+    margin-top: 4rem;
 }
 
-.f-info-links a:hover{
-    text-decoration: underline;
+.f-info {
+    text-align: center;
+    height: 9rem;
+    background-color: var(--bg-light);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-around;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border-light);
 }
 
-.f-info-links, .f-info-socials, .f-info-brand{
-
+.f-info-links, .f-info-socials, .f-info-brand {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.f-info-socials i{
-    font-size: 1.2rem;
-    margin-right: 1rem;
+.f-info-brand {
+    color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
-.f-info {
-    text-align: center;
-    height: 8rem;
-    background-color: #ebebeb;
+.f-info-links a {
+    text-decoration: none;
+    color: var(--text-gray);
+    margin: 0 0.75rem;
+    font-size: 0.9rem;
+    transition: var(--transition-standard);
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+    color: var(--text-dark);
+}
+
+.f-info-socials i {
+    font-size: 1.35rem;
+    margin: 0 0.75rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: var(--transition-standard);
+}
+
+.f-info-socials i:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* =========================================
+   FILTERS BAR — Premium Airbnb Style
+   ========================================= */
+.filters-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0.6rem 0 0.5rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    gap: 1rem;
+}
+
+.filters-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+#filters {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 0;
+}
+
+#filters::-webkit-scrollbar {
+    display: none;
+}
+
+.filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: space-evenly;
+    padding: 0.25rem 0.75rem 0.5rem;
+    text-align: center;
+    opacity: 0.55;
+    transition: var(--transition-standard);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    min-width: 56px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-right: 0.25rem;
 }
-footer{
-    margin-top: 40px;
-}
-/* Cards */
 
-.listing-card{
+.filter:hover {
+    opacity: 1;
+    border-bottom: 2px solid var(--text-dark);
+}
+
+.filter.active {
+    opacity: 1;
+    border-bottom: 2px solid var(--text-dark);
+}
+
+.filter i {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    line-height: 1;
+}
+
+.filter p {
+    font-size: 0.68rem;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+/* Tax Toggle Pill */
+.tax-toggle {
+    border: 1.5px solid var(--border-light) !important;
+    border-radius: 10px;
+    height: 2.8rem;
+    padding: 0 1rem !important;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: var(--transition-standard);
+    white-space: nowrap;
+    flex-shrink: 0;
+    gap: 0.6rem;
+}
+
+.tax-toggle:hover {
+    border-color: var(--text-dark) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.tax-toggle .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.tax-info {
+    display: none;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* =========================================
+   LISTING CARDS — Premium Airbnb Style
+   ========================================= */
+.listing-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block;
+}
+
+/* Outer col wrapper needs no padding weirdness */
+.row > .listing-link {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.listing-card {
     border: none !important;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    background-color: transparent !important;
+    transition: var(--transition-standard);
+    cursor: pointer;
 }
 
-.card-img-top{
-    border-radius: 1rem !important;
+/* Image container — 4:3 ratio keeps image compact so title + price are always visible */
+.card-img-container {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 0;
+    background-color: var(--bg-light);
+}
+
+.card-img-top {
+    border-radius: 12px !important;
     width: 100% !important;
+    height: 100% !important;
     object-fit: cover !important;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    display: block;
 }
 
-.card-body{
-    padding: 0 !important;
+/* Zoom on hover */
+.listing-link:hover .card-img-top {
+    transform: scale(1.05);
 }
 
-.card-text p{
+/* Subtle gradient overlay at bottom of image for depth */
+.card-img-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 35%;
+    background: linear-gradient(to top, rgba(0,0,0,0.07), transparent);
+    border-radius: 0 0 12px 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.listing-link:hover .card-img-container::after {
+    opacity: 1;
+}
+
+/* Overlay transparent */
+.card-img-container .card-img-overlay {
+    opacity: 0 !important;
+    pointer-events: none;
+    background: transparent !important;
+}
+
+/* Card body below image */
+.card-body {
+    padding: 0.55rem 0 0 !important;
+}
+
+.card-text {
+    font-size: 0.88rem !important;
+    color: var(--text-dark) !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Title line */
+.card-text b {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 0.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Price line */
+.price-container {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.88rem;
+    color: var(--text-dark);
     font-weight: 400;
 }
 
-.listing-link{
-    text-decoration: none;
+.price-container strong,
+.price-container b {
+    font-weight: 700;
 }
 
-/* card effect */
-
-.card-img-overlay{
-    opacity: 0;
+.price-label {
+    font-weight: 400;
+    color: var(--text-dark);
 }
 
-.card-img-overlay:hover {
-    opacity: 0.2;
+/* GST badge */
+.tax-info {
+    display: none;
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    font-weight: 500;
+    margin-left: 0.2rem;
+}
+
+/* Edit & Create Pages / Forms */
+.form-card {
     background-color: white;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 2.5rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    margin-top: 2rem;
+    margin-bottom: 4rem;
 }
 
-/* edit page  */
-.add-btn{
-    background-color: #fe424d !important;
+.form-label {
+    font-weight: 500 !important;
+    color: var(--text-dark) !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.form-control {
+    border-radius: 8px !important;
+    border: 1px solid var(--border-light) !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    transition: var(--transition-standard) !important;
+}
+
+.form-control:focus {
+    border-color: var(--text-dark) !important;
+    box-shadow: none !important;
+}
+
+.form-control::placeholder {
+    color: #b0b0b0;
+}
+
+.add-btn, .edit-btn, .btn-airbnb {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
     border: none !important;
+    transition: var(--transition-standard) !important;
 }
-.edit-btn{
-    background-color: #fe424d !important;
+
+.add-btn:hover, .edit-btn:hover, .btn-airbnb:hover {
+    background-color: var(--primary-dark) !important;
+    box-shadow: 0 4px 10px rgba(254, 66, 77, 0.2);
+}
+
+.image-preview {
+    max-width: 250px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+    margin-top: 0.5rem;
+}
+
+.image-preview img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Show details page */
+.show-title-container {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.show-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.show-card {
     border: none !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    padding: 0 !important;
 }
 
-/* Show page */
-
-.show-img{
-    height: 50vh;
+.show-img-container {
+    width: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.btns{
+.show-img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 28rem !important;
+    object-fit: cover !important;
+}
+
+.host-info {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.show-card-desc {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.show-card-meta {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.show-card-meta i {
+    width: 20px;
+    margin-right: 0.5rem;
+    color: var(--text-dark);
+}
+
+.btns {
     display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border-light);
 }
 
-.show-card{
-    padding-left: 0;
-    padding-right: 0;
+.btn-delete {
+    background-color: var(--text-dark) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 0.6rem 1.5rem !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: var(--transition-standard) !important;
+}
+
+.btn-delete:hover {
+    background-color: #000000 !important;
+}
+
+/* Reviews */
+.reviews-section {
+    padding-top: 2rem;
+}
+
+.review-form-card {
+    background-color: #ffffff;
+    border-radius: 14px;
+    padding: 2.25rem;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    margin-bottom: 3rem;
+}
+
+.review-form-card h4 {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+}
+
+.review-form-card .form-control {
+    border: 1px solid var(--border-light) !important;
+    border-radius: 8px !important;
+    padding: 0.8rem 1rem !important;
+    font-size: 0.95rem !important;
+    transition: var(--transition-standard) !important;
+    background-color: #fafafa;
+}
+
+.review-form-card .form-control:focus {
+    border-color: var(--text-dark) !important;
+    background-color: #ffffff;
+    box-shadow: none !important;
+}
+
+.review-form-card .btn-outline-dark {
+    border: 1px solid var(--text-dark) !important;
+    background-color: var(--text-dark) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem;
+    border-radius: 8px !important;
+    padding: 0.65rem 2rem !important;
+    transition: var(--transition-standard) !important;
+}
+
+.review-form-card .btn-outline-dark:hover {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.review-card {
+    border: 1px solid var(--border-light) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
+    transition: var(--transition-standard) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.review-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+    border-color: #b0b0b0 !important;
+}
+
+.review-card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-dark);
+}
+
+.review-card-title::before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ebebeb;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23717171'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 18px;
+    flex-shrink: 0;
+}
+
+.review-card .starability-result {
+    margin: 0.4rem 0 !important;
+    transform: scale(0.8);
+    transform-origin: left center;
+}
+
+.review-card-comment {
+    color: var(--text-dark);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.review-card .btn-delete {
+    background-color: transparent !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color) !important;
+    padding: 0.35rem 0.85rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    transition: var(--transition-standard) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: fit-content;
+}
+
+.review-card .btn-delete:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    box-shadow: 0 2px 6px rgba(254, 66, 77, 0.15);
 }
 
 /* Map */
-#map { 
-  width: 80vh;
-  height: 400px; 
-    
+.map-section {
+    padding-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+#map {
+    width: 100% !important;
+    height: 400px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border: 1px solid var(--border-light);
+}
+
+/* Starability custom styling fixes */
+.starability-slot {
+    min-height: 30px !important;
+}
+
+/* =========================================
+   LISTING GRID — Layout Polish
+   ========================================= */
+
+/* Give each card column consistent vertical spacing */
+.row.row-cols-lg-3 > *,
+.row.row-cols-md-2 > *,
+.row.row-cols-sm-1 > * {
+    margin-bottom: 0;
+}
+
+/* Prevent Bootstrap col from adding extra padding around cards */
+.row.row-cols-lg-3.mt-3 {
+    row-gap: 1.5rem;
+    column-gap: 0;
+}
+
+/* =========================================
+   SEARCH BANNER POLISH
+   ========================================= */
+.search-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.85rem 1.25rem;
+    background-color: var(--bg-light);
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+}
+
+.search-banner h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.search-banner .btn-sm {
+    font-size: 0.8rem;
+    border-radius: 20px;
+    padding: 0.3rem 0.9rem;
+    font-weight: 500;
+}
+
+/* =========================================
+   EMPTY / NO-RESULTS STATE
+   ========================================= */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--border-light);
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+/* =========================================
+   MOBILE FILTER TOGGLE BUTTON
+   ========================================= */
+.btn-outline-secondary.d-md-none {
+    border-radius: 22px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.5rem 1.1rem;
+    border-color: var(--border-light);
+    color: var(--text-dark);
+    transition: var(--transition-standard);
+}
+
+.btn-outline-secondary.d-md-none:hover {
+    background-color: var(--bg-light);
+    border-color: var(--text-dark);
+    color: var(--text-dark);
+}
+
+/* =========================================
+   RESPONSIVE TWEAKS
+   ========================================= */
+
+@media (max-width: 768px) {
+    .filters-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 1rem;
+    }
+
+    #filters {
+        width: 100%;
+    }
+
+    .tax-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* On mobile, slightly taller image is fine */
+    .card-img-container {
+        aspect-ratio: 16 / 11;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-text b {
+        white-space: normal;
+    }
 }
