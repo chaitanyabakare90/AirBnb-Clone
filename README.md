@@ -1,6 +1,6 @@
 # Airbnb Clone
 
-🚀 Live Demo: [https://your-deployed-link.com](https://airbnb-project-1dxc.onrender.com)
+🚀 Live Demo: [AirBnb](https://airbnb-project-1dxc.onrender.com)
 
 A full-stack Airbnb-style web application that allows users to create, manage, and explore property listings. The application supports secure user authentication, image uploads, reviews, and authorization features while following the MVC architecture for scalability and maintainability.
 
