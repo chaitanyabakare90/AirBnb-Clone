@@ -22,6 +22,7 @@ const User = require("./models/user.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
+const compassRouter = require("./routes/compass.js");
 
 const db_url = process.env.ATLASDB_URL;
 main().then(() => {
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // Required for Compass AI API route
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
@@ -87,6 +89,7 @@ app.use((req,res,next) =>{
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use("/api/compass", compassRouter); // Compass AI assistant API
 
 // app.get("/demouser", async(req,res) =>{
 //     let fakeuser = new User({

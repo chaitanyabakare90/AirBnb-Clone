@@ -1,14 +1,49 @@
-<footer>
-    <div class="f-info">
-        <div class="f-info-socials">
-            <i class="fa-brands fa-linkedin"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-square-facebook"></i>
+<footer class="main-footer">
+    <!-- Top section: Multi-column links -->
+    <div class="footer-top-columns">
+        <div class="footer-col">
+            <h6>Explore</h6>
+            <ul>
+                <li><a href="/listings">Browse Stays</a></li>
+                <li><a href="#" onclick="if(window.openPanel) { window.openPanel(); } return false;">AI Stay Finder</a></li>
+            </ul>
         </div>
-        <div class="f-info-brand">&copy; WanderLust Private Limited</div>
-        <div class="f-info-links">
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms</a>
+        <div class="footer-col">
+            <h6>Hosting</h6>
+            <ul>
+                <li><a href="/listings/new">WanderLust your home</a></li>
+                <li><a href="/listings">Hosting Resources</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h6>Account</h6>
+            <ul>
+                <li><a href="/signup">Sign up</a></li>
+                <li><a href="/login">Log in</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom section: Brand bar -->
+    <div class="footer-bottom-bar">
+        <div class="footer-bottom-left">
+            <span class="copyright">&copy; <%= new Date().getFullYear() %> WanderLust Private Limited</span>
+            <span class="dot-divider">&middot;</span>
+            <a href="/listings">Explore</a>
+        </div>
+        
+        <div class="footer-bottom-right">
+            <!-- Language/Currency selectors -->
+            <div class="footer-locale">
+                <span class="locale-item"><i class="fa-solid fa-globe"></i> English (IN)</span>
+                <span class="locale-item">₹ INR</span>
+            </div>
+            <!-- Social links -->
+            <div class="footer-socials">
+                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-square-instagram"></i></a>
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-square-facebook"></i></a>
+            </div>
         </div>
     </div>
 </footer>

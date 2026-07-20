@@ -1,0 +1,511 @@
+
+
+/* ---------- Design tokens ---------- */
+:root {
+  --compass-primary:        #FF385C;
+  --compass-primary-hover:  #E31C5F;
+  --compass-dark:           #222222;
+  --compass-secondary:      #717171;
+  --compass-border:         #DDDDDD;
+  --compass-bg:             #FFFFFF;
+  --compass-msg-ai-bg:      #F7F7F7;
+  --compass-shadow:         0 6px 16px rgba(0,0,0,0.12);
+  --compass-shadow-deep:    0 8px 28px rgba(0,0,0,0.18);
+  --compass-radius-card:    12px;
+  --compass-radius-btn:     8px;
+  --compass-radius-input:   8px;
+  --compass-font:           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --compass-transition:     0.2s ease;
+}
+
+/* ---------- Floating trigger button ---------- */
+#compass-trigger {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--compass-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--compass-shadow-deep);
+  transition: transform var(--compass-transition), opacity var(--compass-transition);
+  outline: none;
+}
+
+#compass-trigger:hover {
+  transform: scale(1.05);
+}
+
+#compass-trigger svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Loading pulse on the trigger icon */
+#compass-trigger.is-loading svg {
+  animation: compass-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes compass-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+/* ---------- Tooltip ---------- */
+.compass-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  background: var(--compass-dark);
+  color: #fff;
+  font-family: var(--compass-font);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 7px 12px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Arrow pointing down */
+.compass-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 18px;
+  border: 5px solid transparent;
+  border-top-color: var(--compass-dark);
+}
+
+#compass-trigger:hover .compass-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Chat panel ---------- */
+#compass-panel {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1001;
+  width: 360px;
+  height: 480px;
+  background: var(--compass-bg);
+  border-radius: var(--compass-radius-card);
+  box-shadow: var(--compass-shadow-deep);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  /* Hidden state */
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+#compass-panel.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* ---------- Panel header ---------- */
+.compass-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--compass-border);
+  flex-shrink: 0;
+}
+
+.compass-header-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--compass-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.compass-header-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.compass-header-title {
+  font-family: var(--compass-font);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--compass-dark);
+  flex: 1;
+}
+
+.compass-header-subtitle {
+  font-family: var(--compass-font);
+  font-size: 11px;
+  color: var(--compass-secondary);
+  margin-top: 1px;
+}
+
+#compass-close-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--compass-secondary);
+  font-size: 18px;
+  line-height: 1;
+  transition: background var(--compass-transition), color var(--compass-transition);
+  flex-shrink: 0;
+}
+
+#compass-close-btn:hover {
+  background: var(--compass-msg-ai-bg);
+  color: var(--compass-dark);
+}
+
+/* ---------- Messages area ---------- */
+#compass-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+/* Thin custom scrollbar */
+#compass-messages::-webkit-scrollbar { width: 4px; }
+#compass-messages::-webkit-scrollbar-track { background: transparent; }
+#compass-messages::-webkit-scrollbar-thumb { background: var(--compass-border); border-radius: 2px; }
+
+/* ---------- Message bubbles ---------- */
+.compass-msg {
+  max-width: 82%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-family: var(--compass-font);
+  font-size: 13.5px;
+  line-height: 1.5;
+  word-break: break-word;
+  animation: compass-msg-in 0.18s ease;
+}
+
+@keyframes compass-msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.compass-msg--user {
+  align-self: flex-end;
+  background: var(--compass-primary);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.compass-msg--ai {
+  align-self: flex-start;
+  background: var(--compass-msg-ai-bg);
+  color: var(--compass-dark);
+  border-bottom-left-radius: 4px;
+}
+
+/* Thinking/loading bubble */
+.compass-msg--thinking {
+  align-self: flex-start;
+  background: var(--compass-msg-ai-bg);
+  color: var(--compass-secondary);
+  border-bottom-left-radius: 4px;
+  font-style: italic;
+  animation: compass-pulse 1.4s ease-in-out infinite;
+}
+
+/* ---------- Input row ---------- */
+.compass-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--compass-border);
+  flex-shrink: 0;
+}
+
+#compass-input {
+  flex: 1;
+  border: 1px solid var(--compass-border);
+  border-radius: var(--compass-radius-input);
+  padding: 9px 13px;
+  font-family: var(--compass-font);
+  font-size: 13.5px;
+  color: var(--compass-dark);
+  background: var(--compass-bg);
+  outline: none;
+  transition: border-color var(--compass-transition);
+}
+
+#compass-input:focus {
+  border-color: var(--compass-dark);
+}
+
+#compass-input::placeholder {
+  color: var(--compass-secondary);
+}
+
+#compass-send-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--compass-radius-btn);
+  background: var(--compass-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--compass-transition), transform var(--compass-transition);
+}
+
+#compass-send-btn:hover:not(:disabled) {
+  background: var(--compass-primary-hover);
+}
+
+#compass-send-btn:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+#compass-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#compass-send-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Listing cards grid (Compass results) ---------- */
+#compass-listings-section {
+  margin-top: 32px;
+  margin-bottom: 40px;
+}
+
+.compass-listings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.compass-listings-title {
+  font-family: var(--compass-font);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--compass-dark);
+}
+
+#compass-clear-filters {
+  font-family: var(--compass-font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--compass-dark);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  display: none; /* shown only when filters are active */
+  transition: text-decoration var(--compass-transition);
+}
+
+#compass-clear-filters:hover {
+  text-decoration: underline;
+}
+
+#compass-clear-filters.visible {
+  display: inline;
+}
+
+/* Responsive grid */
+.compass-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Individual card */
+.compass-card {
+  border-radius: var(--compass-radius-card);
+  box-shadow: var(--compass-shadow);
+  background: var(--compass-bg);
+  overflow: hidden;
+  transition: box-shadow var(--compass-transition), transform var(--compass-transition), border var(--compass-transition);
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.compass-card:hover {
+  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Highlighted matched card */
+.compass-card.is-matched {
+  border: 2px solid var(--compass-primary);
+}
+
+.compass-card__image-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.compass-card__image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.compass-card:hover .compass-card__image-wrap img {
+  transform: scale(1.04);
+}
+
+.compass-card__body {
+  padding: 13px 15px 16px;
+}
+
+.compass-card__title {
+  font-family: var(--compass-font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--compass-dark);
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compass-card__location {
+  font-family: var(--compass-font);
+  font-size: 13px;
+  color: var(--compass-secondary);
+  margin: 0 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compass-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.compass-card__price {
+  font-family: var(--compass-font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--compass-dark);
+}
+
+.compass-card__price span {
+  font-weight: 400;
+  color: var(--compass-secondary);
+  font-size: 12px;
+}
+
+.compass-card__tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.compass-card__tag {
+  font-family: var(--compass-font);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--compass-secondary);
+  background: var(--compass-msg-ai-bg);
+  border-radius: 20px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* "AI Pick" badge shown on matched cards */
+.compass-card__match-badge {
+  font-family: var(--compass-font);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--compass-primary);
+  background: #FFF0F3;
+  border: 1px solid rgba(255,56,92,0.2);
+  border-radius: 20px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Empty / no-results state */
+.compass-empty {
+  text-align: center;
+  padding: 40px 20px;
+  font-family: var(--compass-font);
+  color: var(--compass-secondary);
+  font-size: 14px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  #compass-panel {
+    width: calc(100vw - 24px);
+    right: 12px;
+    bottom: 12px;
+    height: 72vh;
+  }
+
+  #compass-trigger {
+    bottom: 16px;
+    right: 16px;
+  }
+}

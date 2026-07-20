@@ -55,12 +55,29 @@
                 <div><i class="fa-solid fa-ship"></i></div>
                 <p>Boats</p>
             </div>
-        </div>
-
-        <div class="tax-toggle">
-            <div class="form-check-reverse form-switch">
-                <input class="form-check-input" type="checkbox" id="switchCheckDefault">
-                <label class="form-check-label" for="switchCheckDefault">Display after total taxes</label>
+            <div class="filter">
+                <div><i class="fa-solid fa-umbrella-beach"></i></div>
+                <p>Beachfront</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-gem"></i></div>
+                <p>Luxe</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-tree"></i></div>
+                <p>Treehouses</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-dungeon"></i></div>
+                <p>Caves</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-water"></i></div>
+                <p>Surfing</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-person-skiing"></i></div>
+                <p>Skiing</p>
             </div>
         </div>
     </div>
@@ -74,14 +91,22 @@
   </div>
 <% } %>
 
+<%# ── Compass AI context banner ─────────────────────────── %>
+<% if (compassQuery) { %>
+  <div class="d-flex align-items-center gap-2 mt-3 mb-1">
+    <h5 class="mb-0">Compass found stays for &ldquo;<span class="text-danger"><%= compassQuery %></span>&rdquo;</h5>
+    <a href="/listings" class="btn btn-sm btn-outline-secondary ms-2">Clear filters</a>
+  </div>
+<% } %>
+
 <% if (alllistings.length === 0) { %>
   <%# ── No-results empty state ── %>
   <div class="text-center py-5">
     <i class="fa-solid fa-magnifying-glass fa-3x text-muted mb-3"></i>
     <h4 class="mt-3 text-muted">
-      No listings found for &ldquo;<span class="text-danger"><%= searchQuery %></span>&rdquo;
+      No listings found for &ldquo;<span class="text-danger"><%= searchQuery || compassQuery %></span>&rdquo;
     </h4>
-    <p class="text-muted">Try a different city or country name.</p>
+    <p class="text-muted">Try a different search query or rephrase your request to Compass.</p>
     <a href="/listings" class="btn btn-danger mt-2">Browse all listings</a>
   </div>
 <% } else { %>
@@ -107,22 +132,7 @@
     <% } %>
   </div>
 <% } %>
-
-    
-    <script>
-        let taxSwitch = document.querySelector("#switchCheckDefault");
-        taxSwitch.addEventListener("click",()=>{
-            let gstText = document.querySelectorAll(".tax-info");
-            for(info of gstText){
-                if(info.style.display != "inline"){
-                    info.style.display = "inline";
-                }else{
-                    info.style.display = "none"
-                }
-            }
-        })
-    </script>
-
-
-
-
+<!-- Compass AI Travel Assistant Widget (Index Page Only) -->
+<link href="/css/compass.css" rel="stylesheet">
+<%- include("../includes/compass.ejs") %>
+<script src="/js/compass.js"></script>

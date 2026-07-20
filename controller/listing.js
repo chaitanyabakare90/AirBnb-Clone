@@ -6,9 +6,17 @@ const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });//start geocoding service by passing access token
 module.exports.index = async (req, res) => {
   const searchQuery = req.query.search ? req.query.search.trim() : "";
+  const compassQuery = req.query.compass_query ? req.query.compass_query.trim() : "";
+  const compassIds = req.query.compass_ids
+    ? req.query.compass_ids.split(",").filter(id => id.trim() !== "")
+    : null;
+
   let alllistings;
 
-  if (searchQuery) {
+  if (compassIds !== null) {
+    // Filter listings by MongoDB _id if matched by Compass AI
+    alllistings = await Listing.find({ _id: { $in: compassIds } });
+  } else if (searchQuery) {
     // Case-insensitive search on both location and country fields
     const regex = new RegExp(searchQuery, "i");
     alllistings = await Listing.find({
@@ -21,7 +29,7 @@ module.exports.index = async (req, res) => {
     alllistings = await Listing.find({});
   }
 
-  res.render("listings/index.ejs", { alllistings, searchQuery });
+  res.render("listings/index.ejs", { alllistings, searchQuery, compassQuery });
 };
 
 module.exports.renderNewForm = (req,res) =>{

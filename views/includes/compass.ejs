@@ -1,0 +1,57 @@
+
+<button id="compass-trigger" aria-label="Open Compass AI assistant">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="9"/>
+    <polygon points="12,3 14.5,12 12,10 9.5,12" fill="white" stroke="none"/>
+    <polygon points="12,21 9.5,12 12,14 14.5,12" fill="rgba(255,255,255,0.5)" stroke="none"/>
+    <circle cx="12" cy="12" r="1.5" fill="white" stroke="none"/>
+  </svg>
+
+  <span class="compass-tooltip" role="tooltip">Need help finding a stay?</span>
+</button>
+
+
+<div id="compass-panel" role="dialog" aria-label="Compass AI assistant" aria-modal="true">
+
+  <!-- Header -->
+  <div class="compass-header">
+    <div class="compass-header-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/>
+        <polygon points="12,3 14.5,12 12,10 9.5,12" fill="white" stroke="none"/>
+        <polygon points="12,21 9.5,12 12,14 14.5,12" fill="rgba(255,255,255,0.5)" stroke="none"/>
+        <circle cx="12" cy="12" r="1.5" fill="white" stroke="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="compass-header-title">Compass</div>
+      <div class="compass-header-subtitle">AI-powered travel discovery</div>
+    </div>
+    <button id="compass-close-btn" aria-label="Close Compass">&#x2715;</button>
+  </div>
+
+
+  <div id="compass-messages" role="log" aria-live="polite" aria-label="Conversation">
+    <div class="compass-msg compass-msg--ai">
+      Hey! 👋 I'm Compass. Tell me where you want to go, what vibe you're after, or your budget — I'll find the perfect stay for you.
+    </div>
+  </div>
+
+  <div class="compass-input-row">
+    <input
+      id="compass-input"
+      type="text"
+      placeholder="e.g. beach stay under ₹3000…"
+      aria-label="Message Compass"
+      autocomplete="off"
+      maxlength="400"
+    />
+    <button id="compass-send-btn" aria-label="Send message">
+      
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="13,6 19,12 13,18"/>
+      </svg>
+    </button>
+  </div>
+</div>
